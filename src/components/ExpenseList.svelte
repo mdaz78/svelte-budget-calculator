@@ -2,8 +2,6 @@
   import Title from './Title.svelte';
   import Expense from './Expense.svelte';
   export let expenses = [];
-
-  console.log(expenses);
 </script>
 
 <section>

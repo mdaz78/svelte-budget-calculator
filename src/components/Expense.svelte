@@ -4,7 +4,6 @@
   let displayAmount = false;
 
   function toggleDisplayAmount() {
-    console.log('clicked');
     displayAmount = !displayAmount;
   }
 </script>
