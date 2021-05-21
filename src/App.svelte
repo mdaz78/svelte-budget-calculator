@@ -1,13 +1,13 @@
 <script>
   import Nav from './components/Nav.svelte';
-  import Title from './components/Title.svelte';
+  import expensesData from './expenses';
+  import ExpenseList from './components/ExpenseList.svelte';
+
+  let expenses = [...expensesData];
 </script>
 
 <Nav />
-<Title title="Add Expense" />
 
-<style global lang="postcss">
-  @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
-</style>
+<main class="content">
+  <ExpenseList {expenses} />
+</main>
