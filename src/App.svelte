@@ -11,8 +11,11 @@
     expenses = expenses.filter((expense) => expense.id !== id);
   };
 
+  const clearExpenses = () => (expenses = []);
+
   const expense = {
     remove: removeExpense,
+    clear: clearExpenses,
   };
 
   setContext('expense', expense);
