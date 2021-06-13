@@ -2,10 +2,13 @@
   import { setContext } from 'svelte';
 
   import Nav from './components/Nav.svelte';
+  import Title from './components/Title.svelte';
   import expensesData from './expenses';
   import ExpenseList from './components/ExpenseList.svelte';
 
   let expenses = [...expensesData];
+
+  $: total = expenses.reduce((sum, { amount }) => (sum += amount), 0);
 
   const removeExpense = (id) => {
     expenses = expenses.filter((expense) => expense.id !== id);
@@ -24,5 +27,6 @@
 <Nav />
 
 <main class="content">
+  <Title title={`Total Expenses : $${total}`} />
   <ExpenseList {expenses} {removeExpense} />
 </main>
