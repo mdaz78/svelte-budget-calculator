@@ -5,6 +5,7 @@
   import Title from './components/Title.svelte';
   import ExpenseList from './components/ExpenseList.svelte';
   import ExpenseForm from './components/ExpenseForm.svelte';
+  import Modal from './components/Modal.svelte';
 
   // import expensesData from './expenses';
 
@@ -39,6 +40,7 @@
 
   const addExpense = (expense) => {
     expenses = [expense, ...expenses];
+    hideForm();
   };
 
   const updateExpense = (id) => {
@@ -100,7 +102,9 @@
 <Nav {showForm} />
 <main class="content">
   {#if isFormOpen}
-    <ExpenseForm name={setName} amount={setAmount} {isEditing} {hideForm} />
+    <Modal>
+      <ExpenseForm name={setName} amount={setAmount} {isEditing} {hideForm} />
+    </Modal>
   {/if}
   <Title title={`Total Expenses : $${total}`} />
   <ExpenseList {expenses} {removeExpense} />
