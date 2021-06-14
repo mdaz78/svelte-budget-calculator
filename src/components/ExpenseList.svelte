@@ -1,5 +1,7 @@
 <script>
   import { getContext } from 'svelte';
+  import { fly } from 'svelte/transition';
+  import { flip } from 'svelte/animate';
 
   import Title from './Title.svelte';
   import Expense from './Expense.svelte';
@@ -11,8 +13,14 @@
 <section>
   <Title title="Expense List" />
   <ul>
-    {#each expenses as expense}
-      <Expense {...expense} />
+    {#each expenses as expense, index (expense.id)}
+      <div
+        in:fly={{ x: -200, delay: index * 500 }}
+        out:fly={{ x: 200 }}
+        animate:flip
+      >
+        <Expense {...expense} />
+      </div>
     {:else}
       <h2>No expense added to the list!</h2>
     {/each}
