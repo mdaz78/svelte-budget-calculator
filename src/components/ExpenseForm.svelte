@@ -3,23 +3,30 @@
 
   import Title from './Title.svelte';
 
-  const { add: addExpense } = getContext('expense');
+  const { add: addExpense, edit: editExpense } = getContext('expense');
+
+  export let name = '';
+  export let amount = null;
+  export let isEditing = false;
+  export let hideForm;
 
   const handleSubmit = () => {
-    const expense = {
-      name,
-      amount,
-      id: Math.random() * Date.now(),
-    };
+    if (isEditing) {
+      editExpense({ name, amount });
+    } else {
+      const expense = {
+        name,
+        amount,
+        id: Math.random() * Date.now(),
+      };
+      addExpense(expense);
+    }
 
     name = '';
     amount = null;
-    addExpense(expense);
   };
 
   const title = 'Add Expense';
-  let name = '';
-  let amount = null;
 
   $: isEmpty = !name || !amount;
 </script>
@@ -46,10 +53,14 @@
       class:disabled={isEmpty}
       disabled={isEmpty}
     >
-      Add Expense
+      {#if isEditing}
+        Edit Expense
+      {:else}
+        Add Expense
+      {/if}
     </button>
 
-    <button type="button" class="close-btn">
+    <button type="button" class="close-btn" on:click={hideForm}>
       <i class="fas fa-times" />Close
     </button>
   </form>
