@@ -1,13 +1,14 @@
 <script>
-  import { setContext } from 'svelte';
+  import { afterUpdate, onMount, setContext } from 'svelte';
 
   import Nav from './components/Nav.svelte';
   import Title from './components/Title.svelte';
-  import expensesData from './expenses';
   import ExpenseList from './components/ExpenseList.svelte';
   import ExpenseForm from './components/ExpenseForm.svelte';
 
-  let expenses = [...expensesData];
+  // import expensesData from './expenses';
+
+  let expenses = [];
 
   $: isEditing = setId ? true : false;
   $: total = expenses.reduce((sum, { amount }) => (sum += amount), 0);
@@ -18,6 +19,7 @@
 
   let isFormOpen = false;
 
+  // forms
   const showForm = () => (isFormOpen = true);
   const hideForm = () => {
     isFormOpen = false;
@@ -26,11 +28,14 @@
     setId = null;
   };
 
+  // expense CRUD
   const removeExpense = (id) => {
     expenses = expenses.filter((expense) => expense.id !== id);
   };
 
-  const clearExpenses = () => (expenses = []);
+  const clearExpenses = () => {
+    expenses = [];
+  };
 
   const addExpense = (expense) => {
     expenses = [expense, ...expenses];
@@ -66,6 +71,30 @@
   };
 
   setContext('expense', expense);
+
+  // local Storage
+  const setLocalStorage = (expenses) => {
+    localStorage.setItem('expenses', JSON.stringify(expenses));
+  };
+
+  const getExpensesFromLocalStorage = () => {
+    let expenses = localStorage.getItem('expenses');
+
+    if (expenses) {
+      return JSON.parse(expenses);
+    } else {
+      return null;
+    }
+  };
+
+  // lifecycle method
+  onMount(() => {
+    expenses = getExpensesFromLocalStorage() || [];
+  });
+
+  afterUpdate(() => {
+    setLocalStorage(expenses);
+  });
 </script>
 
 <Nav {showForm} />
